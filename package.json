@@ -1,0 +1,59 @@
+{
+  "name": "lollipop",
+  "version": "1.0.0",
+  "description": "A delicious way to unit test emails",
+  "engines": {
+    "node": ">=10.15.0"
+  },
+  "main": "build/index.js",
+  "dependencies": {
+    "@types/inert": "^5.1.2",
+    "cheerio": "^1.0.0-rc.2",
+    "dotenv": "^6.2.0",
+    "get-port": "^4.1.0",
+    "hapi": "^18.1.0",
+    "inert": "^5.1.2",
+    "opn": "^5.4.0",
+    "query-string": "^6.2.0",
+    "uuid": "^3.3.2"
+  },
+  "scripts": {
+    "start": "node build/index.js",
+    "clean": "rm -fr build/*",
+    "ts": "tsc -w",
+    "nodemon": "nodemon",
+    "code": "concurrently -n ts,nodemon npm:ts npm:nodemon",
+    "test": "lab build/test"
+  },
+  "author": "Sun Knudsen <hello@sunknudsen.com>",
+  "license": "MIT",
+  "keywords": [
+    "development",
+    "email",
+    "test"
+  ],
+  "devDependencies": {
+    "@types/cheerio": "^0.22.10",
+    "@types/code": "^4.0.5",
+    "@types/dotenv": "^6.1.0",
+    "@types/get-port": "^4.0.1",
+    "@types/hapi": "^18.0.0",
+    "@types/opn": "^5.1.0",
+    "@types/query-string": "^6.2.0",
+    "@types/uuid": "^3.4.4",
+    "code": "^5.2.4",
+    "concurrently": "^4.1.0",
+    "handlebars": "^4.1.0",
+    "lab": "^18.0.1",
+    "nodemon": "^1.18.10",
+    "typescript": "^3.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lickstats/lollipop.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lickstats/lollipop/issues"
+  },
+  "homepage": "https://github.com/lickstats/lollipop#readme"
+}

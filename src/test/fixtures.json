@@ -1,0 +1,28 @@
+{
+  "messages": [
+    {
+      "from": {
+        "email": "steve@example.com",
+        "name": "Steve Brown"
+      },
+      "to": {
+        "email": "alice@example.com",
+        "name": "Alice Green"
+      },
+      "subject": "Test 1",
+      "html": "This is a <a id=\"test1\" href=\"https://lickstats.com?access_token=hello123\">test</a>."
+    },
+    {
+      "from": {
+        "email": "steve@example.com",
+        "name": "Steve Brown"
+      },
+      "to": {
+        "email": "alice@example.com",
+        "name": "Alice Green"
+      },
+      "subject": "Test 2",
+      "html": "This is another <a id=\"test2\" href=\"https://lickstats.com?access_token=hello456\">test</a>."
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <base href="{{base}}">
+    <link rel="shortcut icon" href="/logo.png">
+    <title>{{message.subject}}</title>
+    <style>
+      @font-face {
+        font-family: 'Roboto Mono';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 400;
+        src:
+          local('Roboto Mono Regular'),
+          local('Roboto Mono-Regular'),
+          url('/webfonts/roboto-mono-latin-400.woff2') format('woff2'),
+          url('/webfonts/roboto-mono-latin-400.woff') format('woff');
+      }
+      @font-face {
+        font-family: 'Roboto Mono';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 400;
+        src:
+          local('Roboto Mono Regular '),
+          local('Roboto Mono-Regular'),
+          url('/webfonts/roboto-mono-latin-400.woff2') format('woff2'),
+          url('/webfonts/roboto-mono-latin-400.woff') format('woff');
+      }
+      body {
+        font-family: 'Roboto Mono', monospace;
+        color: #cccccc;
+      }
+      hr {
+        background-color: #cccccc;
+        border: none;
+        height: 1px;
+      }
+      a, a:active, a:focus, a:hover {
+        color: #ef8990;
+      }
+      .container {
+        width: 600px;
+        margin: auto;
+        text-align: center;
+      }
+      .headers {
+        font-size: 12px;
+        font-weight: bold;
+        color: #cccccc;
+        text-align: left;
+      }
+      .mobile {
+        height: 20px;
+        fill: #cccccc;
+        cursor: pointer;
+      }
+      .desktop {
+        height: 20px;
+        fill: #cccccc;
+        cursor: pointer;
+      }
+      iframe {
+        border: solid 1px #cccccc;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        transition: width 0.3s, height 0.3s;
+      }
+      iframe.desktop {
+        width: 600px;
+        height: 338px;
+      }
+      iframe.mobile {
+        width: 320px;
+        height: 569px;
+      }
+    </style>
+    <script>
+      function desktop() {
+        document.getElementById('preview').className = 'desktop';
+      }
+      function mobile() {
+        document.getElementById('preview').className = 'mobile';
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      {{#if message}}
+        <div class="headers">
+          From: {{message.from.name}} &lt;{{message.from.email}}&gt;<br />
+          To: {{message.to.name}} &lt;{{message.to.email}}&gt;<br />
+          Subject: {{message.subject}}
+        </div><hr /><br />
+        <div>
+          <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="desktop" class="mobile" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" onclick="desktop()">
+            <path fill="currentColor" d="M528 0H48C21.5 0 0 21.5 0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3 0-24 10.7-24 24s10.7 24 24 24h272c13.3 0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"></path>
+          </svg>
+          <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="mobile" class="desktop" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" onclick="mobile()">
+            <path fill="currentColor" d="M272 0H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h224c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zM160 480c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"></path>
+          </svg>
+        </div><br />
+        <iframe id="preview" class="desktop" srcdoc="{{message.html}}"></iframe><br /><br />
+        <small><a href="https://www.npmjs.com/package/lollipop" target="_blank">Lollipop</a> by <a href="https://lickstats.com/" target="_blank">Licktats</a></small>
+      {{else}}
+        <strong>Not found</strong><br /><br />
+        <small><a href="https://www.npmjs.com/package/lollipop" target="_blank">Lollipop</a> by <a href="https://lickstats.com/" target="_blank">Licktats</a></small>
+      {{/if}}
+    </div>
+  </body>
+</html>
