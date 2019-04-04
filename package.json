@@ -1,6 +1,6 @@
 {
   "name": "lollipop",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A delicious way to unit test emails",
   "engines": {
     "node": ">=10.15.0"
