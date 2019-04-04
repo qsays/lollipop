@@ -26,6 +26,7 @@ export interface ParsedMessage extends StoredMessage {
 interface LollipopOptions {
     livePreview: boolean;
 }
+export declare const link: (links: Link[], id: string) => Link;
 export default class Lollipop {
     port: number;
     hapi: hapi.Server;

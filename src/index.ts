@@ -74,6 +74,16 @@ const readPreviewTemplate = function(): Promise<string> {
   });
 }
 
+export const link = function(links: Link[], id: string) {
+  for (let index = links.length; index--;) {
+    let link = links[index];
+    if (link.id === id) {
+      return link;
+    }
+  }
+  return null;
+}
+
 export default class Lollipop {
   public port: number;
   public hapi: hapi.Server;

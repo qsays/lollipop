@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import { expect } from 'code';
 import lab from 'lab';
 import fixtures from './fixtures.json';
-import lollipop, { ParsedMessage } from '../index';
+import lollipop, { link, ParsedMessage } from '../index';
 
 dotenv.config();
 
@@ -79,6 +79,10 @@ experiment('Lollipop', () => {
       expect(response.statusCode).to.equal(200);
       let payload: ParsedMessage = JSON.parse(response.payload);
       expect(payload.id).to.equal(context.message1.messageId);
+      let linkObject = link(payload.links, 'test1');
+      expect(linkObject).to.exist();
+      expect(linkObject.query).to.exist();
+      expect(linkObject.query.access_token).to.equal('hello123');
     });
   });
   describe('lollipopInstance.send(message2)', () => {

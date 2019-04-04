@@ -2,12 +2,19 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const code_1 = require("code");
 const lab_1 = __importDefault(require("lab"));
 const fixtures_json_1 = __importDefault(require("./fixtures.json"));
-const index_1 = __importDefault(require("../index"));
+const index_1 = __importStar(require("../index"));
 dotenv_1.default.config();
 const { after, before, experiment, describe, it } = exports.lab = lab_1.default.script();
 const wait = function (delay) {
@@ -77,6 +84,10 @@ experiment('Lollipop', () => {
             code_1.expect(response.statusCode).to.equal(200);
             let payload = JSON.parse(response.payload);
             code_1.expect(payload.id).to.equal(context.message1.messageId);
+            let linkObject = index_1.link(payload.links, 'test1');
+            code_1.expect(linkObject).to.exist();
+            code_1.expect(linkObject.query).to.exist();
+            code_1.expect(linkObject.query.access_token).to.equal('hello123');
         });
     });
     describe('lollipopInstance.send(message2)', () => {

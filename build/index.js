@@ -39,6 +39,15 @@ const readPreviewTemplate = function () {
         });
     });
 };
+exports.link = function (links, id) {
+    for (let index = links.length; index--;) {
+        let link = links[index];
+        if (link.id === id) {
+            return link;
+        }
+    }
+    return null;
+};
 class Lollipop {
     async init() {
         this.port = await get_port_1.default({
