@@ -9,18 +9,26 @@ const lab_1 = __importDefault(require("lab"));
 const fixtures_json_1 = __importDefault(require("./fixtures.json"));
 const index_1 = __importDefault(require("../index"));
 dotenv_1.default.config();
-const lollipopInstance = new index_1.default();
-const { experiment, before, describe, it } = exports.lab = lab_1.default.script();
+const { after, before, experiment, describe, it } = exports.lab = lab_1.default.script();
+const wait = function (delay) {
+    return new Promise(resolve => setTimeout(resolve, delay));
+};
+var lollipopInstance;
 var context = {};
 experiment('Lollipop', () => {
+    before(async () => {
+        lollipopInstance = new index_1.default({
+            livePreview: process.env.LOLLIPOP_LIVE_PREVIEW === 'true' ? true : false
+        });
+    });
     describe('lollipopInstance.latest()', () => {
         it('should return null', async () => {
-            let message = lollipopInstance.latest();
-            code_1.expect(message).to.equal(null);
+            let parsedMessage = lollipopInstance.latest();
+            code_1.expect(parsedMessage).to.equal(null);
         });
     });
     describe('lollipopInstance.send(invalidMessage)', () => {
-        it('should throw error', async () => {
+        it('should throw error because payload is invalid', async () => {
             try {
                 //@ts-ignore
                 let messageId = await lollipopInstance.send({ foo: 'bar' });
@@ -32,7 +40,7 @@ experiment('Lollipop', () => {
         });
     });
     describe('lollipopInstance.send(invalidMessage)', () => {
-        it('should throw error', async () => {
+        it('should throw error because payload is incomplete', async () => {
             try {
                 let messageId = await lollipopInstance.send({
                     //@ts-ignore
@@ -46,7 +54,7 @@ experiment('Lollipop', () => {
         });
     });
     describe('lollipopInstance.send(message1)', () => {
-        it('should add message to store and return message id', async () => {
+        it('should add message 1 to store and return message id', async () => {
             let messageId = await lollipopInstance.send(fixtures_json_1.default.messages[0]);
             code_1.expect(messageId).to.match(/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}$/);
             context.message1 = {
@@ -55,13 +63,24 @@ experiment('Lollipop', () => {
         });
     });
     describe('lollipopInstance.latest()', () => {
-        it('should return latest message from store', async () => {
-            let message = lollipopInstance.latest();
-            code_1.expect(message.id).to.equal(context.message1.messageId);
+        it('should return latest message from store using method', async () => {
+            let parsedMessage = lollipopInstance.latest();
+            code_1.expect(parsedMessage.id).to.equal(context.message1.messageId);
+        });
+    });
+    describe('GET /messages/latest', () => {
+        it('should return latest message from store using API', async () => {
+            let response = await lollipopInstance.hapi.inject({
+                method: 'GET',
+                url: '/messages/latest'
+            });
+            code_1.expect(response.statusCode).to.equal(200);
+            let payload = JSON.parse(response.payload);
+            code_1.expect(payload.id).to.equal(context.message1.messageId);
         });
     });
     describe('lollipopInstance.send(message2)', () => {
-        it('should add message to store and return message id', async () => {
+        it('should add message 2 to store and return message id', async () => {
             let messageId = await lollipopInstance.send(fixtures_json_1.default.messages[1]);
             code_1.expect(messageId).to.match(/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}$/);
             context.message2 = {
@@ -70,31 +89,56 @@ experiment('Lollipop', () => {
         });
     });
     describe('lollipopInstance.latest()', () => {
-        it('should return latest message from store', async () => {
-            let message = lollipopInstance.latest();
-            code_1.expect(message.id).to.equal(context.message2.messageId);
+        it('should return newest latest message from store', async () => {
+            let parsedMessage = lollipopInstance.latest();
+            code_1.expect(parsedMessage.id).to.equal(context.message2.messageId);
         });
     });
     describe('lollipopInstance.message(id)', () => {
-        it('should return message matching id from store', async () => {
-            let message = lollipopInstance.message(context.message1.messageId);
-            code_1.expect(message.id).to.equal(context.message1.messageId);
-            code_1.expect(message.from).to.equal(fixtures_json_1.default.messages[0].from);
-            code_1.expect(message.to).to.equal(fixtures_json_1.default.messages[0].to);
-            code_1.expect(message.subject).to.equal(fixtures_json_1.default.messages[0].subject);
-            code_1.expect(message.html).to.equal(fixtures_json_1.default.messages[0].html);
-            code_1.expect(message.$).to.be.a.function();
-            code_1.expect(message.$('a').first().attr('id')).to.equal('test1');
-            code_1.expect(message.links).to.be.an.array();
-            code_1.expect(message.links.length).to.equal(1);
-            message.links.forEach(function (link) {
+        it('should return message matching id from store using method', async () => {
+            let parsedMessage = lollipopInstance.message(context.message1.messageId);
+            code_1.expect(parsedMessage.id).to.equal(context.message1.messageId);
+            code_1.expect(parsedMessage.from).to.equal(fixtures_json_1.default.messages[0].from);
+            code_1.expect(parsedMessage.to).to.equal(fixtures_json_1.default.messages[0].to);
+            code_1.expect(parsedMessage.subject).to.equal(fixtures_json_1.default.messages[0].subject);
+            code_1.expect(parsedMessage.html).to.equal(fixtures_json_1.default.messages[0].html);
+            code_1.expect(parsedMessage.$).to.be.a.function();
+            code_1.expect(parsedMessage.$('a').first().attr('id')).to.equal('test1');
+            code_1.expect(parsedMessage.links).to.be.an.array();
+            code_1.expect(parsedMessage.links.length).to.equal(1);
+            parsedMessage.links.forEach(function (link) {
                 code_1.expect(link.href).to.exist();
             });
-            code_1.expect(message.link('hello')).to.equal(null);
-            code_1.expect(message.link('test1')).to.be.an.object();
-            code_1.expect(message.link('test1').id).to.equal('test1');
-            code_1.expect(message.link('test1').query.access_token).to.equal('hello123');
+            code_1.expect(parsedMessage.link('hello')).to.equal(null);
+            code_1.expect(parsedMessage.link('test1')).to.be.an.object();
+            code_1.expect(parsedMessage.link('test1').id).to.equal('test1');
+            code_1.expect(parsedMessage.link('test1').query.access_token).to.equal('hello123');
         });
+    });
+    describe('GET /messages/:messageId', () => {
+        it('should return message matching id from store using API', async () => {
+            let response = await lollipopInstance.hapi.inject({
+                method: 'GET',
+                url: `/messages/${context.message1.messageId}`
+            });
+            code_1.expect(response.statusCode).to.equal(200);
+            let payload = JSON.parse(response.payload);
+            code_1.expect(payload.id).to.equal(context.message1.messageId);
+            code_1.expect(payload.from).to.equal(fixtures_json_1.default.messages[0].from);
+            code_1.expect(payload.to).to.equal(fixtures_json_1.default.messages[0].to);
+            code_1.expect(payload.subject).to.equal(fixtures_json_1.default.messages[0].subject);
+            code_1.expect(payload.html).to.equal(fixtures_json_1.default.messages[0].html);
+            code_1.expect(payload.links).to.be.an.array();
+            code_1.expect(payload.links.length).to.equal(1);
+            payload.links.forEach(function (link) {
+                code_1.expect(link.href).to.exist();
+            });
+        });
+    });
+    after(async () => {
+        if (process.env.LOLLIPOP_LIVE_PREVIEW === 'true') {
+            await wait(1000);
+        }
     });
 });
 //# sourceMappingURL=index.js.map

@@ -7,6 +7,7 @@ import getPort from 'get-port';
 import hapi from 'hapi';
 import inert from 'inert';
 import joi from 'joi';
+import boom from 'boom';
 import handlebars from 'handlebars';
 import { v4 as uuidv4 } from 'uuid';
 import opn from 'opn';
@@ -74,16 +75,17 @@ const readPreviewTemplate = function(): Promise<string> {
 }
 
 export default class Lollipop {
+  public port: number;
+  public hapi: hapi.Server;
   private template: string;
   private livePreview: boolean;
-  private hapi: hapi.Server;
   private store: Store;
   private async init() {
-    let port = await getPort({
+    this.port = await getPort({
       port: parseInt(process.env.LOLLIPOP_PORT)
     });
     this.hapi = new hapi.Server({
-      port: port,
+      port: this.port,
       host: 'localhost',
       routes: {
         files: {
@@ -107,7 +109,39 @@ export default class Lollipop {
       },
       {
         method: 'GET',
-        path: '/preview/{messageId}',
+        path: '/messages/latest',
+        handler: async (request:hapi.Request, h:hapi.ResponseToolkit) => {
+          try {
+            let parsedMessage = this.latest();
+            if (parsedMessage) {
+              return parsedMessage;
+            } else {
+              boom.notFound();
+            }
+          } catch(error) {
+            boom.badImplementation(error);
+          }
+        }
+      },
+      {
+        method: 'GET',
+        path: '/messages/{messageId}',
+        handler: async (request:hapi.Request, h:hapi.ResponseToolkit) => {
+          try {
+            let parsedMessage = this.message(request.params.messageId);
+            if (parsedMessage) {
+              return parsedMessage;
+            } else {
+              boom.notFound();
+            }
+          } catch(error) {
+            boom.badImplementation(error);
+          }
+        }
+      },
+      {
+        method: 'GET',
+        path: '/previews/{messageId}',
         handler: async (request:hapi.Request, h:hapi.ResponseToolkit) => {
           let message = this.message(request.params.messageId);
           let templateDeletage = handlebars.compile(this.template);
@@ -171,7 +205,7 @@ export default class Lollipop {
       });
       this.store.push(storedMessage);
       if (this.livePreview === true) {
-        opn(`${this.hapi.info.uri}/preview/${storedMessage.id}`);
+        opn(`${this.hapi.info.uri}/previews/${storedMessage.id}`);
       }
       return storedMessage.id;
     }

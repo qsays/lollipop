@@ -10,6 +10,7 @@ const get_port_1 = __importDefault(require("get-port"));
 const hapi_1 = __importDefault(require("hapi"));
 const inert_1 = __importDefault(require("inert"));
 const joi_1 = __importDefault(require("joi"));
+const boom_1 = __importDefault(require("boom"));
 const handlebars_1 = __importDefault(require("handlebars"));
 const uuid_1 = require("uuid");
 const opn_1 = __importDefault(require("opn"));
@@ -40,11 +41,11 @@ const readPreviewTemplate = function () {
 };
 class Lollipop {
     async init() {
-        let port = await get_port_1.default({
+        this.port = await get_port_1.default({
             port: parseInt(process.env.LOLLIPOP_PORT)
         });
         this.hapi = new hapi_1.default.Server({
-            port: port,
+            port: this.port,
             host: 'localhost',
             routes: {
                 files: {
@@ -68,7 +69,43 @@ class Lollipop {
             },
             {
                 method: 'GET',
-                path: '/preview/{messageId}',
+                path: '/messages/latest',
+                handler: async (request, h) => {
+                    try {
+                        let parsedMessage = this.latest();
+                        if (parsedMessage) {
+                            return parsedMessage;
+                        }
+                        else {
+                            boom_1.default.notFound();
+                        }
+                    }
+                    catch (error) {
+                        boom_1.default.badImplementation(error);
+                    }
+                }
+            },
+            {
+                method: 'GET',
+                path: '/messages/{messageId}',
+                handler: async (request, h) => {
+                    try {
+                        let parsedMessage = this.message(request.params.messageId);
+                        if (parsedMessage) {
+                            return parsedMessage;
+                        }
+                        else {
+                            boom_1.default.notFound();
+                        }
+                    }
+                    catch (error) {
+                        boom_1.default.badImplementation(error);
+                    }
+                }
+            },
+            {
+                method: 'GET',
+                path: '/previews/{messageId}',
                 handler: async (request, h) => {
                     let message = this.message(request.params.messageId);
                     let templateDeletage = handlebars_1.default.compile(this.template);
@@ -134,7 +171,7 @@ class Lollipop {
             });
             this.store.push(storedMessage);
             if (this.livePreview === true) {
-                opn_1.default(`${this.hapi.info.uri}/preview/${storedMessage.id}`);
+                opn_1.default(`${this.hapi.info.uri}/previews/${storedMessage.id}`);
             }
             return storedMessage.id;
         }

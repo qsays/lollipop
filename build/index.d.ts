@@ -1,4 +1,5 @@
 /// <reference types="cheerio" />
+import hapi from 'hapi';
 interface Contact {
     email: string;
     name?: string;
@@ -26,9 +27,10 @@ interface LollipopOptions {
     livePreview: boolean;
 }
 export default class Lollipop {
+    port: number;
+    hapi: hapi.Server;
     private template;
     private livePreview;
-    private hapi;
     private store;
     private init;
     constructor(options?: LollipopOptions);
