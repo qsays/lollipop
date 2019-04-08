@@ -13,7 +13,7 @@ const joi_1 = __importDefault(require("joi"));
 const boom_1 = __importDefault(require("boom"));
 const handlebars_1 = __importDefault(require("handlebars"));
 const uuid_1 = require("uuid");
-const opn_1 = __importDefault(require("opn"));
+const open_1 = __importDefault(require("open"));
 const cheerio_1 = __importDefault(require("cheerio"));
 const query_string_1 = __importDefault(require("query-string"));
 dotenv_1.default.config();
@@ -180,7 +180,9 @@ class Lollipop {
             });
             this.store.push(storedMessage);
             if (this.livePreview === true) {
-                opn_1.default(`${this.hapi.info.uri}/previews/${storedMessage.id}`);
+                open_1.default(`${this.hapi.info.uri}/previews/${storedMessage.id}`, {
+                    background: true
+                });
             }
             return storedMessage.id;
         }

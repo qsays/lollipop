@@ -10,7 +10,7 @@ import joi from 'joi';
 import boom from 'boom';
 import handlebars from 'handlebars';
 import { v4 as uuidv4 } from 'uuid';
-import opn from 'opn';
+import open from 'open';
 import cheerio from 'cheerio';
 import queryString from 'query-string';
 
@@ -215,7 +215,9 @@ export default class Lollipop {
       });
       this.store.push(storedMessage);
       if (this.livePreview === true) {
-        opn(`${this.hapi.info.uri}/previews/${storedMessage.id}`);
+        open(`${this.hapi.info.uri}/previews/${storedMessage.id}`, {
+          background: true
+        });
       }
       return storedMessage.id;
     }
