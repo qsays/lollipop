@@ -1,6 +1,6 @@
 {
   "name": "lollipop",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A delicious way to unit test emails",
   "engines": {
     "node": ">=10.15.0"
@@ -26,7 +26,8 @@
     "nodemon": "nodemon",
     "code": "concurrently -n ts,nodemon npm:ts npm:nodemon",
     "test": "lab build/test",
-    "test-lp": "LOLLIPOP_LIVE_PREVIEW=true lab build/test"
+    "test-lp": "LOLLIPOP_LIVE_PREVIEW=true lab build/test",
+    "publish": "npm publish"
   },
   "author": "Sun Knudsen <hello@sunknudsen.com>",
   "license": "MIT",
