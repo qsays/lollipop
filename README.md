@@ -23,3 +23,5 @@ Will be published shortly...
 MIT
 
 Lollipop by [Lickstats](https://lickstats.com/)
+
+Logo by [Freepik](https://www.freepik.com/)
