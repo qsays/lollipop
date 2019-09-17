@@ -21,12 +21,12 @@
   },
   "scripts": {
     "start": "node build/index.js",
-    "clean": "rm -fr build/*",
     "ts": "tsc -w",
     "nodemon": "nodemon",
     "code": "concurrently -n ts,nodemon npm:ts npm:nodemon",
     "test": "lab -S build/test",
     "test-lp": "LOLLIPOP_LIVE_PREVIEW=true lab build/test",
+    "build": "rm -fr build/*; tsc",
     "ncu": "ncu -u"
   },
   "author": "Sun Knudsen <hello@sunknudsen.com>",
