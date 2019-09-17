@@ -1,6 +1,6 @@
 {
   "name": "lollipop",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A delicious way to unit test emails",
   "engines": {
     "node": ">=10.15.0"
@@ -10,14 +10,14 @@
     "@types/inert": "^5.1.2",
     "boom": "^7.3.0",
     "cheerio": "^1.0.0-rc.2",
-    "dotenv": "^7.0.0",
-    "get-port": "^4.2.0",
-    "handlebars": "^4.1.1",
+    "dotenv": "^8.1.0",
+    "get-port": "^5.0.0",
+    "handlebars": "^4.2.0",
     "hapi": "^18.1.0",
     "inert": "^5.1.3",
-    "open": "^6.1.0",
-    "query-string": "^6.4.2",
-    "uuid": "^3.3.2"
+    "open": "^6.4.0",
+    "query-string": "^6.8.3",
+    "uuid": "^3.3.3"
   },
   "scripts": {
     "start": "node build/index.js",
@@ -27,6 +27,7 @@
     "code": "concurrently -n ts,nodemon npm:ts npm:nodemon",
     "test": "lab build/test",
     "test-lp": "LOLLIPOP_LIVE_PREVIEW=true lab build/test",
+    "ncu": "ncu -u",
     "publish": "npm publish"
   },
   "author": "Sun Knudsen <hello@sunknudsen.com>",
@@ -37,19 +38,19 @@
     "test"
   ],
   "devDependencies": {
-    "@types/cheerio": "^0.22.11",
+    "@types/cheerio": "^0.22.13",
     "@types/code": "^4.0.5",
     "@types/dotenv": "^6.1.1",
     "@types/get-port": "^4.2.0",
-    "@types/hapi": "^18.0.1",
-    "@types/open": "^6.1.0",
+    "@types/hapi": "^18.0.2",
+    "@types/open": "^6.2.1",
     "@types/query-string": "^6.3.0",
-    "@types/uuid": "^3.4.4",
+    "@types/uuid": "^3.4.5",
     "code": "^5.2.4",
-    "concurrently": "^4.1.0",
+    "concurrently": "^4.1.2",
     "lab": "^18.0.2",
-    "nodemon": "^1.18.10",
-    "typescript": "^3.4.1"
+    "nodemon": "^1.19.2",
+    "typescript": "^3.6.3"
   },
   "repository": {
     "type": "git",

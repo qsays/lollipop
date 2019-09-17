@@ -27,10 +27,11 @@ experiment('Lollipop', () => {
         lollipopInstance = new index_1.default({
             livePreview: process.env.LOLLIPOP_LIVE_PREVIEW === 'true' ? true : false
         });
+        await lollipopInstance.init();
     });
     describe('lollipopInstance.latest()', () => {
         it('should return null', async () => {
-            let parsedMessage = lollipopInstance.latest();
+            let parsedMessage = await lollipopInstance.latest();
             code_1.expect(parsedMessage).to.equal(null);
         });
     });
@@ -84,10 +85,10 @@ experiment('Lollipop', () => {
             code_1.expect(response.statusCode).to.equal(200);
             let payload = JSON.parse(response.payload);
             code_1.expect(payload.id).to.equal(context.message1.messageId);
-            let linkObject = index_1.link(payload.links, 'test1');
-            code_1.expect(linkObject).to.exist();
-            code_1.expect(linkObject.query).to.exist();
-            code_1.expect(linkObject.query.access_token).to.equal('hello123');
+            let link = index_1.getLink(payload.links, 'test1');
+            code_1.expect(link).to.exist();
+            code_1.expect(link.query).to.exist();
+            code_1.expect(link.query.access_token).to.equal('hello123');
         });
     });
     describe('lollipopInstance.send(message2)', () => {
@@ -120,10 +121,10 @@ experiment('Lollipop', () => {
             parsedMessage.links.forEach(function (link) {
                 code_1.expect(link.href).to.exist();
             });
-            code_1.expect(parsedMessage.link('hello')).to.equal(null);
-            code_1.expect(parsedMessage.link('test1')).to.be.an.object();
-            code_1.expect(parsedMessage.link('test1').id).to.equal('test1');
-            code_1.expect(parsedMessage.link('test1').query.access_token).to.equal('hello123');
+            code_1.expect(parsedMessage.getLink('hello')).to.equal(null);
+            code_1.expect(parsedMessage.getLink('test1')).to.be.an.object();
+            code_1.expect(parsedMessage.getLink('test1').id).to.equal('test1');
+            code_1.expect(parsedMessage.getLink('test1').query.access_token).to.equal('hello123');
         });
     });
     describe('GET /messages/:messageId', () => {

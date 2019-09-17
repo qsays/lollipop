@@ -41,7 +41,7 @@ interface Link {
 export interface ParsedMessage extends StoredMessage {
   $: CheerioStatic;
   links: Link[];
-  link: (id: string) => null | Link
+  getLink: (id: string) => null | Link
 }
 
 type Store = StoredMessage[];
@@ -74,7 +74,7 @@ const readPreviewTemplate = function(): Promise<string> {
   });
 }
 
-export const link = function(links: Link[], id: string) {
+export const getLink = function(links: Link[], id: string) {
   for (let index = links.length; index--;) {
     let link = links[index];
     if (link.id === id) {
@@ -90,9 +90,18 @@ export default class Lollipop {
   private template: string;
   private livePreview: boolean;
   private store: Store;
-  private async init() {
+  public async init(): Promise<void> {
+    let port = null;
+    if (process.env.LOLLIPOP_PORT) {
+      let lollipopPort = parseInt(process.env.LOLLIPOP_PORT);
+      if (lollipopPort > 0 && lollipopPort <= 65535) {
+        port = lollipopPort;
+      } else {
+        throw new Error('Invalid LOLLIPOP_PORT');
+      }
+    }
     this.port = await getPort({
-      port: parseInt(process.env.LOLLIPOP_PORT)
+      port: port
     });
     this.hapi = new hapi.Server({
       port: this.port,
@@ -174,7 +183,6 @@ export default class Lollipop {
       this.livePreview = false;
     }
     this.store = [];
-    this.init();
   }
   private parse(storedMessage: StoredMessage): ParsedMessage {
     let $ = cheerio.load(storedMessage.html);
@@ -193,7 +201,7 @@ export default class Lollipop {
     let parsedMessage = Object.assign(storedMessage, {
       $: $,
       links: links,
-      link: function(id: string) {
+      getLink: function(id: string) {
         for (let index = links.length; index--;) {
           let link = links[index];
           if (link.id === id) {

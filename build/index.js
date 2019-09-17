@@ -39,7 +39,7 @@ const readPreviewTemplate = function () {
         });
     });
 };
-exports.link = function (links, id) {
+exports.getLink = function (links, id) {
     for (let index = links.length; index--;) {
         let link = links[index];
         if (link.id === id) {
@@ -49,9 +49,28 @@ exports.link = function (links, id) {
     return null;
 };
 class Lollipop {
+    constructor(options) {
+        if (options && options.livePreview) {
+            this.livePreview = options.livePreview;
+        }
+        else {
+            this.livePreview = false;
+        }
+        this.store = [];
+    }
     async init() {
+        let port = null;
+        if (process.env.LOLLIPOP_PORT) {
+            let lollipopPort = parseInt(process.env.LOLLIPOP_PORT);
+            if (lollipopPort > 0 && lollipopPort <= 65535) {
+                port = lollipopPort;
+            }
+            else {
+                throw new Error('Invalid LOLLIPOP_PORT');
+            }
+        }
         this.port = await get_port_1.default({
-            port: parseInt(process.env.LOLLIPOP_PORT)
+            port: port
         });
         this.hapi = new hapi_1.default.Server({
             port: this.port,
@@ -130,16 +149,6 @@ class Lollipop {
             console.log(`Lollipop running at: ${this.hapi.info.uri}`);
         }
     }
-    constructor(options) {
-        if (options && options.livePreview) {
-            this.livePreview = options.livePreview;
-        }
-        else {
-            this.livePreview = false;
-        }
-        this.store = [];
-        this.init();
-    }
     parse(storedMessage) {
         let $ = cheerio_1.default.load(storedMessage.html);
         let links = [];
@@ -157,7 +166,7 @@ class Lollipop {
         let parsedMessage = Object.assign(storedMessage, {
             $: $,
             links: links,
-            link: function (id) {
+            getLink: function (id) {
                 for (let index = links.length; index--;) {
                     let link = links[index];
                     if (link.id === id) {

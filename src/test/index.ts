@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import { expect } from 'code';
 import lab from 'lab';
 import fixtures from './fixtures.json';
-import lollipop, { link, ParsedMessage } from '../index';
+import lollipop, { getLink, ParsedMessage } from '../index';
 
 dotenv.config();
 
@@ -22,10 +22,11 @@ experiment('Lollipop', () => {
     lollipopInstance = new lollipop({
       livePreview: process.env.LOLLIPOP_LIVE_PREVIEW === 'true' ? true : false
     });
+    await lollipopInstance.init();
   });
   describe('lollipopInstance.latest()', () => {
     it('should return null', async () => {
-      let parsedMessage = lollipopInstance.latest();
+      let parsedMessage = await lollipopInstance.latest();
       expect(parsedMessage).to.equal(null);
     });
   });
@@ -79,10 +80,10 @@ experiment('Lollipop', () => {
       expect(response.statusCode).to.equal(200);
       let payload: ParsedMessage = JSON.parse(response.payload);
       expect(payload.id).to.equal(context.message1.messageId);
-      let linkObject = link(payload.links, 'test1');
-      expect(linkObject).to.exist();
-      expect(linkObject.query).to.exist();
-      expect(linkObject.query.access_token).to.equal('hello123');
+      let link = getLink(payload.links, 'test1');
+      expect(link).to.exist();
+      expect(link.query).to.exist();
+      expect(link.query.access_token).to.equal('hello123');
     });
   });
   describe('lollipopInstance.send(message2)', () => {
@@ -117,10 +118,10 @@ experiment('Lollipop', () => {
       parsedMessage.links.forEach(function(link) {
         expect(link.href).to.exist();
       });
-      expect(parsedMessage.link('hello')).to.equal(null);
-      expect(parsedMessage.link('test1')).to.be.an.object();
-      expect(parsedMessage.link('test1').id).to.equal('test1');
-      expect(parsedMessage.link('test1').query.access_token).to.equal('hello123');
+      expect(parsedMessage.getLink('hello')).to.equal(null);
+      expect(parsedMessage.getLink('test1')).to.be.an.object();
+      expect(parsedMessage.getLink('test1').id).to.equal('test1');
+      expect(parsedMessage.getLink('test1').query.access_token).to.equal('hello123');
     });
   });
   describe('GET /messages/:messageId', () => {

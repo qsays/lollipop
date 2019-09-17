@@ -21,19 +21,19 @@ interface Link {
 export interface ParsedMessage extends StoredMessage {
     $: CheerioStatic;
     links: Link[];
-    link: (id: string) => null | Link;
+    getLink: (id: string) => null | Link;
 }
 interface LollipopOptions {
     livePreview: boolean;
 }
-export declare const link: (links: Link[], id: string) => Link;
+export declare const getLink: (links: Link[], id: string) => Link;
 export default class Lollipop {
     port: number;
     hapi: hapi.Server;
     private template;
     private livePreview;
     private store;
-    private init;
+    init(): Promise<void>;
     constructor(options?: LollipopOptions);
     private parse;
     send(message: Message): Promise<StoredMessage['id']>;
