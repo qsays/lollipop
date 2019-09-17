@@ -25,7 +25,7 @@
     "ts": "tsc -w",
     "nodemon": "nodemon",
     "code": "concurrently -n ts,nodemon npm:ts npm:nodemon",
-    "test": "lab build/test",
+    "test": "lab -S build/test",
     "test-lp": "LOLLIPOP_LIVE_PREVIEW=true lab build/test",
     "ncu": "ncu -u"
   },
