@@ -1,8 +1,8 @@
 'use strict'
 
 import dotenv from 'dotenv';
-import { expect } from 'code';
-import lab from 'lab';
+import { expect } from '@hapi/code';
+import lab from '@hapi/lab';
 import fixtures from './fixtures.json';
 import lollipop, { getLink, ParsedMessage } from '../index';
 

@@ -1,5 +1,5 @@
 /// <reference types="cheerio" />
-import hapi from 'hapi';
+import hapi from '@hapi/hapi';
 interface Contact {
     email: string;
     name?: string;

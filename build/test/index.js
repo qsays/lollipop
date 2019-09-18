@@ -11,8 +11,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
-const code_1 = require("code");
-const lab_1 = __importDefault(require("lab"));
+const code_1 = require("@hapi/code");
+const lab_1 = __importDefault(require("@hapi/lab"));
 const fixtures_json_1 = __importDefault(require("./fixtures.json"));
 const index_1 = __importStar(require("../index"));
 dotenv_1.default.config();
