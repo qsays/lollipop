@@ -214,7 +214,7 @@ export default class Lollipop {
     return parsedMessage;
   }
   public async send(message: Message): Promise<StoredMessage['id']> {
-    let { error } = joi.validate(message, messageSchema);
+    let { error } = messageSchema.validate(message);
     if (error) {
       throw error
     } else {

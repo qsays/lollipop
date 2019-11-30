@@ -10,7 +10,7 @@
         "name": "Alice Green"
       },
       "subject": "Test 1",
-      "html": "This is a <a id=\"test1\" href=\"https://lickstats.com?access_token=hello123\">test</a>."
+      "html": "<!DOCTYPE html><html lang=\"en\"><body>This is a <a id=\"test1\" href=\"https://app.lickstats.com/login?access_token=51819df95b524388a895738dc4280cca\">test</a>.</body></html>"
     },
     {
       "from": {
@@ -22,7 +22,7 @@
         "name": "Alice Green"
       },
       "subject": "Test 2",
-      "html": "This is another <a id=\"test2\" href=\"https://lickstats.com?access_token=hello456\">test</a>."
+      "html": "<!DOCTYPE html><html lang=\"en\"><body>This is another <a id=\"test2\" href=\"https://app.lickstats.com/login?access_token=b70dff53f21e4212be07f06a40f49076\">test</a>.</body></html>"
     }
   ]
 }

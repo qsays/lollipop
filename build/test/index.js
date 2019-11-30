@@ -88,7 +88,7 @@ experiment('Lollipop', () => {
             let link = index_1.getLink(payload.links, 'test1');
             code_1.expect(link).to.exist();
             code_1.expect(link.query).to.exist();
-            code_1.expect(link.query.access_token).to.equal('hello123');
+            code_1.expect(link.query.access_token).to.equal('51819df95b524388a895738dc4280cca');
         });
     });
     describe('lollipopInstance.send(message2)', () => {
@@ -124,7 +124,7 @@ experiment('Lollipop', () => {
             code_1.expect(parsedMessage.getLink('hello')).to.equal(null);
             code_1.expect(parsedMessage.getLink('test1')).to.be.an.object();
             code_1.expect(parsedMessage.getLink('test1').id).to.equal('test1');
-            code_1.expect(parsedMessage.getLink('test1').query.access_token).to.equal('hello123');
+            code_1.expect(parsedMessage.getLink('test1').query.access_token).to.equal('51819df95b524388a895738dc4280cca');
         });
     });
     describe('GET /messages/:messageId', () => {

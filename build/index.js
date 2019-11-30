@@ -179,7 +179,7 @@ class Lollipop {
         return parsedMessage;
     }
     async send(message) {
-        let { error } = joi_1.default.validate(message, messageSchema);
+        let { error } = messageSchema.validate(message);
         if (error) {
             throw error;
         }
