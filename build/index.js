@@ -185,7 +185,7 @@ class Lollipop {
         }
         else {
             let storedMessage = Object.assign(message, {
-                id: uuid_1.v4()
+                id: uuid_1.v4().replace(/-/g, '')
             });
             this.store.push(storedMessage);
             if (this.livePreview === true) {

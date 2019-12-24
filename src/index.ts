@@ -219,7 +219,7 @@ export default class Lollipop {
       throw error
     } else {
       let storedMessage: StoredMessage = Object.assign(message, {
-        id: uuidv4()
+        id: uuidv4().replace(/-/g, '')
       });
       this.store.push(storedMessage);
       if (this.livePreview === true) {

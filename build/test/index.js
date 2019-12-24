@@ -21,7 +21,9 @@ const wait = function (delay) {
     return new Promise(resolve => setTimeout(resolve, delay));
 };
 var lollipopInstance;
-var context = {};
+var context = {
+    messageIds: []
+};
 experiment('Lollipop', () => {
     before(async () => {
         lollipopInstance = new index_1.default({
@@ -62,80 +64,76 @@ experiment('Lollipop', () => {
         });
     });
     describe('lollipopInstance.send(message1)', () => {
-        it('should add message 1 to store and return message id', async () => {
+        it('should add message 0 to message store and return its message ID', async () => {
             let messageId = await lollipopInstance.send(fixtures_json_1.default.messages[0]);
-            code_1.expect(messageId).to.match(/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}$/);
-            context.message1 = {
-                messageId: messageId
-            };
+            code_1.expect(messageId).to.match(/^[0-9a-f]{32}$/);
+            context.messageIds.push(messageId);
         });
     });
     describe('lollipopInstance.latest()', () => {
-        it('should return latest message from store using method', async () => {
+        it('should return message 0 (latest message) from message store using instance method', async () => {
             let parsedMessage = lollipopInstance.latest();
-            code_1.expect(parsedMessage.id).to.equal(context.message1.messageId);
+            code_1.expect(parsedMessage.id).to.equal(context.messageIds[0]);
         });
     });
     describe('GET /messages/latest', () => {
-        it('should return latest message from store using API', async () => {
+        it('should return message 0 (latest message) from message store using API', async () => {
             let response = await lollipopInstance.hapi.inject({
                 method: 'GET',
                 url: '/messages/latest'
             });
             code_1.expect(response.statusCode).to.equal(200);
             let payload = JSON.parse(response.payload);
-            code_1.expect(payload.id).to.equal(context.message1.messageId);
-            let link = index_1.getLink(payload.links, 'test1');
+            code_1.expect(payload.id).to.equal(context.messageIds[0]);
+            let link = index_1.getLink(payload.links, 'email-confirmation-anchor');
             code_1.expect(link).to.exist();
             code_1.expect(link.query).to.exist();
             code_1.expect(link.query.access_token).to.equal('51819df95b524388a895738dc4280cca');
         });
     });
     describe('lollipopInstance.send(message2)', () => {
-        it('should add message 2 to store and return message id', async () => {
+        it('should add message 1 to message store and return its message ID', async () => {
             let messageId = await lollipopInstance.send(fixtures_json_1.default.messages[1]);
-            code_1.expect(messageId).to.match(/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}$/);
-            context.message2 = {
-                messageId: messageId
-            };
+            code_1.expect(messageId).to.match(/^[0-9a-f]{32}$/);
+            context.messageIds.push(messageId);
         });
     });
     describe('lollipopInstance.latest()', () => {
-        it('should return newest latest message from store', async () => {
+        it('should return message 1 (latest message) from message store using instance method', async () => {
             let parsedMessage = lollipopInstance.latest();
-            code_1.expect(parsedMessage.id).to.equal(context.message2.messageId);
+            code_1.expect(parsedMessage.id).to.equal(context.messageIds[1]);
         });
     });
     describe('lollipopInstance.message(id)', () => {
-        it('should return message matching id from store using method', async () => {
-            let parsedMessage = lollipopInstance.message(context.message1.messageId);
-            code_1.expect(parsedMessage.id).to.equal(context.message1.messageId);
+        it('should return message 0 from message store using instance method', async () => {
+            let parsedMessage = lollipopInstance.message(context.messageIds[0]);
+            code_1.expect(parsedMessage.id).to.equal(context.messageIds[0]);
             code_1.expect(parsedMessage.from).to.equal(fixtures_json_1.default.messages[0].from);
             code_1.expect(parsedMessage.to).to.equal(fixtures_json_1.default.messages[0].to);
             code_1.expect(parsedMessage.subject).to.equal(fixtures_json_1.default.messages[0].subject);
             code_1.expect(parsedMessage.html).to.equal(fixtures_json_1.default.messages[0].html);
             code_1.expect(parsedMessage.$).to.be.a.function();
-            code_1.expect(parsedMessage.$('a').first().attr('id')).to.equal('test1');
+            code_1.expect(parsedMessage.$('a').first().attr('id')).to.equal('email-confirmation-anchor');
             code_1.expect(parsedMessage.links).to.be.an.array();
             code_1.expect(parsedMessage.links.length).to.equal(1);
             parsedMessage.links.forEach(function (link) {
                 code_1.expect(link.href).to.exist();
             });
             code_1.expect(parsedMessage.getLink('hello')).to.equal(null);
-            code_1.expect(parsedMessage.getLink('test1')).to.be.an.object();
-            code_1.expect(parsedMessage.getLink('test1').id).to.equal('test1');
-            code_1.expect(parsedMessage.getLink('test1').query.access_token).to.equal('51819df95b524388a895738dc4280cca');
+            code_1.expect(parsedMessage.getLink('email-confirmation-anchor')).to.be.an.object();
+            code_1.expect(parsedMessage.getLink('email-confirmation-anchor').id).to.equal('email-confirmation-anchor');
+            code_1.expect(parsedMessage.getLink('email-confirmation-anchor').query.access_token).to.equal('51819df95b524388a895738dc4280cca');
         });
     });
     describe('GET /messages/:messageId', () => {
-        it('should return message matching id from store using API', async () => {
+        it('should return message 0 from message store using API', async () => {
             let response = await lollipopInstance.hapi.inject({
                 method: 'GET',
-                url: `/messages/${context.message1.messageId}`
+                url: `/messages/${context.messageIds[0]}`
             });
             code_1.expect(response.statusCode).to.equal(200);
             let payload = JSON.parse(response.payload);
-            code_1.expect(payload.id).to.equal(context.message1.messageId);
+            code_1.expect(payload.id).to.equal(context.messageIds[0]);
             code_1.expect(payload.from).to.equal(fixtures_json_1.default.messages[0].from);
             code_1.expect(payload.to).to.equal(fixtures_json_1.default.messages[0].to);
             code_1.expect(payload.subject).to.equal(fixtures_json_1.default.messages[0].subject);

@@ -2,27 +2,27 @@
   "messages": [
     {
       "from": {
-        "email": "steve@example.com",
-        "name": "Steve Brown"
+        "email": "noreply@lickstats.com",
+        "name": "Lickstats"
       },
       "to": {
-        "email": "alice@example.com",
-        "name": "Alice Green"
+        "email": "john@example.com",
+        "name": "John Smith"
       },
-      "subject": "Test 1",
-      "html": "<!DOCTYPE html><html lang=\"en\"><body>This is a <a id=\"test1\" href=\"https://app.lickstats.com/login?access_token=51819df95b524388a895738dc4280cca\">test</a>.</body></html>"
+      "subject": "Welcome to Lickstats!",
+      "html": "<!DOCTYPE html><html lang=\"en\"><body><p>Hey John,</p><p>Please click on the following link to confirm your email.</p><p><a id=\"email-confirmation-anchor\" href=\"https://app.lickstats.com/login?access_token=51819df95b524388a895738dc4280cca\">Confirm your email</a>.</p></body></html>"
     },
     {
       "from": {
-        "email": "steve@example.com",
-        "name": "Steve Brown"
+        "email": "noreply@lickstats.com",
+        "name": "Lickstats"
       },
       "to": {
         "email": "alice@example.com",
         "name": "Alice Green"
       },
-      "subject": "Test 2",
-      "html": "<!DOCTYPE html><html lang=\"en\"><body>This is another <a id=\"test2\" href=\"https://app.lickstats.com/login?access_token=b70dff53f21e4212be07f06a40f49076\">test</a>.</body></html>"
+      "subject": "Welcome to Lickstats!",
+      "html": "<!DOCTYPE html><html lang=\"en\"><body><p>Hey Alice,</p><p>Please click on the following link to confirm your email.</p><p><a id=\"email-confirmation-anchor\" href=\"https://app.lickstats.com/login?access_token=b70dff53f21e4212be07f06a40f49076\">Confirm your email</a>.</p></body></html>"
     }
   ]
 }
