@@ -1,5 +1,5 @@
 {
-  "name": "lollipop",
+  "name": "@lickstats/lollipop",
   "version": "1.0.17",
   "description": "Fake email provider designed to automate transaction email unit tests.",
   "engines": {
@@ -62,5 +62,8 @@
   "bugs": {
     "url": "https://github.com/lickstats/lollipop/issues"
   },
-  "homepage": "https://github.com/lickstats/lollipop#readme"
+  "homepage": "https://github.com/lickstats/lollipop#readme",
+  "publishConfig": {
+    "access": "public"
+  }
 }
