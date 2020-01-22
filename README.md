@@ -1,14 +1,16 @@
 # Lollipop
 
-## A delicious way to unit test emails
+## Fake email provider designed to automate transaction email unit tests.
 
 ![Cover](public/cover.png)
 
-Few developers have time to write independent unit tests.
+Few developers have time to write unit tests, so many don’t.
 
-Imagine a signup route that sends an email confirmation link.
+Imagine a signup route that sends an email confirmation link that includes an access token and another route that checks if the right access token is provided.
 
-Wouldn’t it be amazing if we, developers, could programmatically fetch a confirmation access token from that email and synchronously test an email confirmation route?
+Wouldn’t it be amazing if unit tests could programmatically use the access token found in that email and provide it to other unit tests synchronously?
+
+We coudn’t find anything of the sort so we developped Lollipop!
 
 ## Features
 
@@ -123,7 +125,7 @@ let accessToken = getLink(response.body.links, 'email-confirmation-anchor').quer
 ### Get specific email from message store using instance method and read `access_token` query string
 
 ```typescript
-let parsedMessage = lollipopInstance.latest(messageId);
+let parsedMessage = lollipopInstance.message(messageId);
 let accessToken = parsedMessage.getLink('email-confirmation-anchor').query.access_token;
 ```
 
