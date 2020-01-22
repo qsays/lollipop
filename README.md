@@ -10,7 +10,7 @@ Imagine a signup route that sends an email confirmation link that includes an ac
 
 Wouldn’t it be amazing if unit tests could programmatically use the access token found in that email and provide it to other unit tests synchronously?
 
-We coudn’t find anything of the sort so we developped Lollipop!
+We couldn't find anything of the sort so we developed Lollipop!
 
 ## Features
 

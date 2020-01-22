@@ -1,6 +1,6 @@
 {
   "name": "@lickstats/lollipop",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Fake email provider designed to automate transaction email unit tests.",
   "engines": {
     "node": ">=10.15.0"
