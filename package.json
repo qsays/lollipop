@@ -13,7 +13,7 @@
     "@hapi/joi": "^16.1.8",
     "cheerio": "^1.0.0-rc.3",
     "dotenv": "^8.2.0",
-    "get-port": "^5.1.0",
+    "get-port": "^5.1.1",
     "handlebars": "^4.5.3",
     "open": "^7.0.0",
     "query-string": "^6.9.0",
