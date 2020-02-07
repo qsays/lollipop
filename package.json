@@ -16,7 +16,7 @@
     "get-port": "^5.1.0",
     "handlebars": "^4.5.3",
     "open": "^7.0.0",
-    "query-string": "^6.9.0",
+    "query-string": "^6.10.0",
     "uuid": "^3.3.3"
   },
   "scripts": {
