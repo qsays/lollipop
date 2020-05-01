@@ -17,7 +17,8 @@
     "handlebars": "^4.5.3",
     "open": "^7.0.0",
     "query-string": "^6.9.0",
-    "uuid": "^3.3.3"
+    "uuid": "^3.3.3",
+    "snyk": "^1.316.1"
   },
   "scripts": {
     "start": "node build/index.js",
@@ -27,7 +28,9 @@
     "test": "lab -S build/test",
     "test-lp": "LOLLIPOP_LIVE_PREVIEW=true lab build/test",
     "build": "rm -fr build/*; tsc",
-    "ncu": "ncu -u -x @hapi/boom"
+    "ncu": "ncu -u -x @hapi/boom",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "Sun Knudsen <hello@sunknudsen.com>",
   "license": "MIT",
@@ -65,5 +68,6 @@
   "homepage": "https://github.com/lickstats/lollipop#readme",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "snyk": true
 }
